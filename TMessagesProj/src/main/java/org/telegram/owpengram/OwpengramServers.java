@@ -68,9 +68,14 @@ public class OwpengramServers {
     // owpengram-server). Ключ ниже — это ключ ЧУЖОГО публичного тестового
     // сервера owpengram.org, он НЕ подойдёт для твоего инстанса.
     static final String OWPENGRAM_RSA_KEY =
-        "-----BEGIN RSA PUBLIC KEY-----\n" +
-        "ЗАМЕНИ_МЕНЯ_НА_КЛЮЧ_СВОЕГО_СЕРВЕРА\n" +
-        "-----END RSA PUBLIC KEY-----";
+    "-----BEGIN RSA PUBLIC KEY-----\n" +
+    "MIIBCgKCAQEAs/Rb2qGPngRbz5oMEHxqBWeZwwXw4qpyIwsMMHetph9uuKDzykNH\n" +
+    "E5lIzyrLka75TjP150jOOmLBByBc0koXzhc5Yr3QI7QE3+eb0Uy5nLcgl3hEoruo\n" +
+    "OUiPw309U4/sVt/VTo07A/4TgXAfbVuDEp1zzScG5pZt8DbcAFvYKwmpwT4VyTzZ\n" +
+    "+jEGkpBVfzAJLBO8WZjG9YD5BLdFpfky+1gg710n+cZeU7a/bKngBKkmhVs440vI\n" +
+    "eBdFbQcOHYDD4brwse5I8rP+wFqtwWuYiZPTNkMwe5UubDpmKlJRF0Wsd4pmHGl5\n" +
+    "pD7hCJo2yB+o24ZfchFx3azo1Ez1MOP9IwIDAQAB\n" +
+    "-----END RSA PUBLIC KEY-----";
     // fingerprint == 0 -> native layer derives it from the PEM (see ConnectionsManager::applyServerConfig).
     static final long OWPENGRAM_RSA_FINGERPRINT = 0;
 
@@ -91,8 +96,8 @@ public class OwpengramServers {
     public static OwpengramServer owpengramServer() {
         OwpengramServer s = new OwpengramServer();
         s.id                 = ID_OWPENGRAM;
-        s.name               = "Exgram";
-        s.description        = "";
+        s.name               = "ExGram";
+        s.description        = "Тут жил разработчик...";
         s.host               = DEFAULT_HOST;
         s.port               = DEFAULT_PORT;
         s.isOfficial         = true;
