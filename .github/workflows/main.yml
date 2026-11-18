@@ -1,0 +1,52 @@
+name: Build Signed APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Accept SDK licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install SDK platform & build-tools
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Install NDK + CMake
+        run: |
+          sdkmanager "ndk;27.2.12479018"
+          sdkmanager "cmake;3.22.1"
+
+      - name: Place keystore
+        run: |
+          mkdir -p TMessagesProj/config
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > TMessagesProj/config/release.keystore
+
+      - name: Build APK
+        run: >
+          ./gradlew :TMessagesProj_AppStandalone:assembleAfatStandalone
+          -PAPP_PACKAGE=com.exgram.messenger
+          -PAPP_VERSION_CODE=1
+          -PAPP_VERSION_NAME=1.0.0
+          -PRELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          -PRELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
+          -PRELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: exgram-apk
+          path: TMessagesProj_AppStandalone/build/outputs/apk/afat/standalone/app.apk
