@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">Exgram</string>
+    <string name="AppName">ExGram</string>
     <string name="AppNameBeta">Exgram Beta</string>
     <string name="LanguageName">English</string>
     <string name="English">English</string>
