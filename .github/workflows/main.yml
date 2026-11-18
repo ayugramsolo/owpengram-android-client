@@ -30,15 +30,15 @@ jobs:
           echo "path=$SDKMANAGER" >> "$GITHUB_OUTPUT"
 
       - name: Accept SDK licenses
-        run: yes | "${{ steps.sdk.outputs.path }}" --licenses || true
+        run: yes | ${{ steps.sdk.outputs.path }} --licenses || true
 
       - name: Install SDK platform & build-tools
-        run: "${{ steps.sdk.outputs.path }}" "platforms;android-36" "build-tools;36.0.0"
+        run: ${{ steps.sdk.outputs.path }} "platforms;android-36" "build-tools;36.0.0"
 
       - name: Install NDK + CMake
         run: |
-          "${{ steps.sdk.outputs.path }}" "ndk;27.2.12479018"
-          "${{ steps.sdk.outputs.path }}" "cmake;3.22.1"
+          ${{ steps.sdk.outputs.path }} "ndk;27.2.12479018"
+          ${{ steps.sdk.outputs.path }} "cmake;3.22.1"
 
       - name: Place keystore
         run: |
