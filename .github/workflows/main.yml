@@ -19,16 +19,26 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Locate sdkmanager
+        id: sdk
+        run: |
+          SDKMANAGER=$(find "$ANDROID_HOME" -name "sdkmanager" -type f 2>/dev/null | head -n1)
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER=$(find /usr/local/lib/android -name "sdkmanager" -type f 2>/dev/null | head -n1)
+          fi
+          echo "Найден sdkmanager: $SDKMANAGER"
+          echo "path=$SDKMANAGER" >> "$GITHUB_OUTPUT"
+
       - name: Accept SDK licenses
-        run: yes | sdkmanager --licenses || true
+        run: yes | "${{ steps.sdk.outputs.path }}" --licenses || true
 
       - name: Install SDK platform & build-tools
-        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+        run: "${{ steps.sdk.outputs.path }}" "platforms;android-36" "build-tools;36.0.0"
 
       - name: Install NDK + CMake
         run: |
-          sdkmanager "ndk;27.2.12479018"
-          sdkmanager "cmake;3.22.1"
+          "${{ steps.sdk.outputs.path }}" "ndk;27.2.12479018"
+          "${{ steps.sdk.outputs.path }}" "cmake;3.22.1"
 
       - name: Place keystore
         run: |
