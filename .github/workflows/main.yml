@@ -43,7 +43,19 @@ jobs:
       - name: Place keystore
         run: |
           mkdir -p TMessagesProj/config
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > TMessagesProj/config/release.keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | tr -d '\n\r ' | base64 -d > TMessagesProj/config/release.keystore
+
+      - name: Verify keystore
+        run: |
+          echo "Размер файла:"
+          ls -la TMessagesProj/config/release.keystore
+          echo "SHA256:"
+          sha256sum TMessagesProj/config/release.keystore
+          echo "Ожидаемый SHA256: 4b0d6fc23e2237bece607831c3fb7b3e5a9df3f3f2125568d2de79ff0abf8fb5"
+          echo "Тип файла:"
+          file TMessagesProj/config/release.keystore
+          echo "Проверка через keytool:"
+          keytool -list -v -keystore TMessagesProj/config/release.keystore -storepass "${{ secrets.KEYSTORE_PASSWORD }}" || true
 
       - name: Build APK
         run: >
